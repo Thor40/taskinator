@@ -1,3 +1,4 @@
+var pageContentEl = document.querySelector("#page-content");
 var taskIdCounter = 0;
 var formEl = document.querySelector("#task-form");
 var taskToDoEl = document.querySelector("#tasks-to-do");
@@ -48,7 +49,7 @@ var createTaskEl = function(taskDataObj) {
     // adding select DOM to createTaskEl for form handler
     var taskActionsEl = createTaskActions(taskIdCounter);
     listItemEl.appendChild(taskActionsEl);
-    
+
     // add entire list item to list
     taskToDoEl.appendChild(listItemEl);
 
@@ -102,5 +103,45 @@ var createTaskActions = function(taskId) {
     return actionContanierEl;
 };
 
+// target El id for delete
+var taskButtonHandler = function(event) {
+    // get target elemet from event
+    var targetEl = event.target
+    //edit button was clicked
+    if(targetEl.matches(".edit-btn")) {
+        var taskId = targetEl.getAttribute("data-task-id");
+        editTask(taskId);
+    }
+    // delete button was clicked
+    else if (targetEl.matches(".delete-btn")) {
+        var taskId = targetEl.getAttribute("data-task-id");
+        deleteTask(taskId);
+    }
+};
+
+// select li item with name of array place, and remove that li. Ran in taskButtonHandler on event click target delete button
+var deleteTask = function(taskId) {
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    taskSelected.remove();
+};
+
+var editTask = function(taskId) {
+    //get task list item element
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+    //get content from task name and type
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+    //value (title and selector) of li now applied to input/select to edit
+    document.querySelector("input[name='task-name']").value = taskName;
+    document.querySelector("select[name='task-type']").value = taskType;
+    //select submit button to change button to show we are in edit mode
+    document.querySelector("#save-task").textContent = "Save Task";
+    //
+    formEl.setAttribute("data-task-id", taskId);
+};
+
+
+
+pageContentEl.addEventListener("click", taskButtonHandler);
 formEl.addEventListener("submit", taskFormHandler);
 
