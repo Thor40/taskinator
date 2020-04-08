@@ -37,14 +37,6 @@ var taskFormHandler = function(event) {
         };
         createTaskEl(taskDataObj);
     }
-    
-    // package up data as an object
-    var taskDataObj = {
-        name: taskNameInput,
-        type: taskTypeInput
-    };
-
-    createTaskEl(taskDataObj);
 
 };
 
