@@ -59,7 +59,8 @@ var completeEditTask = function(taskName, taskType, taskId) {
             tasks[i].type = taskType;
         }
     };
-
+    //save into localStorage
+    saveTasks();
     //reset form by removed task id and changing button back to normal
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Add Task";
@@ -97,6 +98,9 @@ var createTaskEl = function(taskDataObj) {
 
     // incrase task counter for the next unique id
     taskIdCounter++;
+
+    //save into localStorage
+    saveTasks();
 };
 
 // dynamically create HTML elements to edit form
@@ -177,6 +181,8 @@ var deleteTask = function(taskId) {
     }
     // reassing tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+        //save into localStorage
+        saveTasks();
 };
 
 var editTask = function(taskId) {
@@ -217,6 +223,8 @@ var taskStatusChangeHandler = function(event) {
             tasks[i].status = statusValue;
         }
     }
+        //save into localStorage
+        saveTasks();
 };
 
 //start drag function
@@ -264,6 +272,8 @@ var dropTaskHandler = function(event) {
     dropZoneEl.removeAttribute("style");
     // append the dropped element to the specific closests element on the page matching the element id task-list
     dropZoneEl.appendChild(draggableElement);
+        //save into localStorage
+        saveTasks();
 };
 
 // if drag element leaves the target property, remove the styling attribute
@@ -272,6 +282,10 @@ var dragLeaveHandler = function(event) {
     if (taskListEl) {
         taskListEl.removeAttribute("style");
     }
+};
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 formEl.addEventListener("submit", taskFormHandler);
